@@ -39,12 +39,8 @@ angular.module('market-front', []).controller('appController', function ($scope,
             method: 'GET',
         }).then(function (response) {
             console.log(response)
-            $scope.loadProducts();
+            $scope.loadProducts(page);
         })
     }
-
-
     $scope.loadProducts(page);
-
-
 });
