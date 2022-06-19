@@ -1,6 +1,8 @@
 package ru.geekbrains.market.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.market.model.Product;
 import ru.geekbrains.market.repository.ProductRepository;
@@ -14,9 +16,14 @@ public class ProductService {
 
     private final ProductRepository repository;
 
-    public List<Product> findAll() {
+    public List<Product> findAll (){
         return repository.findAll();
     }
+
+    public Page<Product> findCatalog (int pageIndex, int pageSize){
+        return repository.findAll(PageRequest.of(pageIndex,pageSize));
+    }
+
 
     public Optional<Product> findById(Long id) {
         return repository.findById(id);
