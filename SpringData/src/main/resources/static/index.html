@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Главная страница</title>
@@ -10,7 +10,7 @@
             crossorigin="anonymous"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="app.js"></script>
+    <script src="application.js"></script>
 </head>
 <body ng-app="market-front">
 <div class="container" ng-controller="appController">
@@ -36,8 +36,59 @@
         </tr>
         </tbody>
     </table>
-    <button ng-click="loadPrevious()" class="btn btn-primary" type=button>Back</button>
-    <button ng-click="loadNext()" class="btn btn-primary" type=button>Next</button>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+
+            <li class="page-item">
+                <a class="page-link" aria-label="Previous" ng-click="loadPrevious()">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item" ng-repeat="p in pagesArray">
+                <button class="page-link" ng-click="loadProducts(p)">{{p}}</button>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" aria-label="Next" ng-click="loadNext()">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <h2>Добавить новый товар</h2>
+    <form novalidate ng-submit="createNewProduct()">
+        <div class="mb-3">
+            <label class="form-label">Название</label>
+            <input type="text" class="form-control" placeholder="Название" ng-model="new_product.title">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Цена</label>
+            <input type="text" class="form-control" placeholder="Цена" ng-model="new_product.price">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+
+    <p></p>
+    <h2>Изменить товар</h2>
+    <form novalidate ng-submit="changeProduct()">
+        <div class="mb-3">
+            <label class="form-label">Название</label>
+            <input type="text" class="form-control" placeholder="Название" ng-model="change_product.title">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Цена</label>
+            <input type="text" class="form-control" placeholder="Цена" ng-model="change_product.price">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Изменить</button>
+    </form>
+
+
+
 </div>
 </body>
 </html>

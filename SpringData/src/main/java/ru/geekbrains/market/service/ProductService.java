@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.market.exception.ResourceNotFoundException;
 import ru.geekbrains.market.model.Product;
 import ru.geekbrains.market.repository.ProductRepository;
 
@@ -22,6 +23,17 @@ public class ProductService {
 
     public Page<Product> findCatalog (int pageIndex, int pageSize){
         return repository.findAll(PageRequest.of(pageIndex,pageSize));
+    }
+
+    public Product change (Product change_product) {
+        Product product = repository.findByTitle(change_product.getTitle()).orElseThrow(()->
+                new ResourceNotFoundException("This Product " + change_product.getTitle() + " not found"));
+        product.setPrice(change_product.getPrice());
+        return repository.save(product);
+    }
+
+    public Optional<Product> findByTitle (String title){
+        return repository.findByTitle(title);
     }
 
 
