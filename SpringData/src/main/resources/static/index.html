@@ -60,6 +60,13 @@
 
     <h2>Добавить новый товар</h2>
     <form novalidate ng-submit="createNewProduct()">
+
+        <label class="form-label">Категория</label>
+
+        <select id="categoryId" class="form-select">
+            <option value="{{c.title}}" ng-repeat="c in category">{{c.title}}</option>
+        </select>
+        <p></p>
         <div class="mb-3">
             <label class="form-label">Название</label>
             <input type="text" class="form-control" placeholder="Название" ng-model="new_product.title">
@@ -75,10 +82,12 @@
     <p></p>
     <h2>Изменить товар</h2>
     <form novalidate ng-submit="changeProduct()">
-        <div class="mb-3">
-            <label class="form-label">Название</label>
-            <input type="text" class="form-control" placeholder="Название" ng-model="change_product.title">
-        </div>
+        <label class="form-label">Название</label>
+
+        <select id="productId" class="form-select">
+            <option value="{{p.title}}" ng-repeat="p in products" >{{p.title}}</option>
+        </select>
+        <p></p>
         <div class="mb-3">
             <label class="form-label">Цена</label>
             <input type="text" class="form-control" placeholder="Цена" ng-model="change_product.price">
@@ -86,7 +95,6 @@
 
         <button type="submit" class="btn btn-primary">Изменить</button>
     </form>
-
 
 
 </div>
