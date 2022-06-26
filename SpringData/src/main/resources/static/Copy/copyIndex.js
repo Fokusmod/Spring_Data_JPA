@@ -98,6 +98,5 @@ angular.module('market-front', []).controller('appController', function ($scope,
             --page;
             $scope.loadProducts(page)
         }
-
     }
 });

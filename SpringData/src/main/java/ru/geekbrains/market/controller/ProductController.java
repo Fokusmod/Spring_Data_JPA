@@ -3,8 +3,12 @@ package ru.geekbrains.market.controller;
 import lombok.RequiredArgsConstructor;;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.market.dto.ProductDto;
+import ru.geekbrains.market.exception.DataValidationException;
 import ru.geekbrains.market.exception.ResourceNotFoundException;
 import ru.geekbrains.market.model.Category;
 import ru.geekbrains.market.model.Product;
@@ -31,29 +35,39 @@ public class ProductController {
         return productService.findCatalog(pageIndex - 1, 10).map(ProductDto::new);
     }
 
+    @GetMapping("/products/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductDto findById (@PathVariable Long id){
+        Product product = productService.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Product not found"));
+        return new ProductDto(product);
+    }
+
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto save(@RequestBody ProductDto new_product) {
-        Product product = new Product();
-        product.setTitle(new_product.getTitle());
-        product.setPrice(new_product.getPrice());
-        Category category = categoryService.findByTitle(new_product.getCategoryTitle())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Category title = " + new_product.getCategoryTitle() + " not found"));
-        product.setCategory(category);
-        productService.save(product);
-        return new ProductDto(product);
-
+    public void save(@RequestBody @Validated ProductDto new_product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new DataValidationException(bindingResult
+                    .getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList()));
+        }
+        productService.saveProductFromDto(new_product);
     }
 
     @PutMapping("/products")
     @ResponseStatus(HttpStatus.OK)
-    public ProductDto change(@RequestBody ProductDto change_product) {
-        Product product = productService.findByTitle(change_product.getTitle())
-                .orElseThrow(() -> new ResourceNotFoundException("This product = " + change_product.getTitle() + " not found"));
-        product.setPrice(change_product.getPrice());
-        productService.save(product);
-        return new ProductDto(product);
+    public void change(@RequestBody @Validated ProductDto change_product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new DataValidationException(bindingResult
+                    .getAllErrors()
+                    .stream()
+                    .map(ObjectError::getDefaultMessage)
+                    .collect(Collectors.toList()));
+        }
+       productService.updateProductFromDto(change_product);
+
     }
 
     @DeleteMapping("/products/{id}")
