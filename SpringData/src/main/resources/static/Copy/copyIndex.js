@@ -7,6 +7,21 @@ angular.module('market-front', []).controller('appController', function ($scope,
     let totalPage;
 
 
+    $scope.loadCategory = function () {
+        $http.get(contextPath + '/category')
+            .then(function (response) {
+                $scope.category = response.data;
+            })
+    }
+
+    $scope.loadAllProducts = function () {
+        $http.get(contextPath + '/all')
+            .then(function (response) {
+                $scope.products = response.data;
+            })
+    }
+
+
     $scope.createPagesArray = function (start, end) {
         let arr = [];
         for (let i = start; i < end + 1; i++) {
@@ -32,14 +47,19 @@ angular.module('market-front', []).controller('appController', function ($scope,
 
 
     $scope.loadProducts(page);
+    $scope.loadAllProducts();
+    $scope.loadCategory();
+
 
     $scope.createNewProduct = function () {
+        let a = document.getElementById('categoryId').value;
+        $scope.new_product.categoryTitle = a;
         $http.post(contextPath + '/products', $scope.new_product)
             .then(function successCallback(response) {
                 $scope.new_product = null;
                 $scope.loadProducts(page);
             }, function failCallback(response) {
-                alert(response.message)
+                alert(response.data.message)
             })
     };
 
@@ -48,11 +68,13 @@ angular.module('market-front', []).controller('appController', function ($scope,
             .then(function successCallback(response) {
                 $scope.loadProducts(page);
             }, function failCallback(response) {
-                alert(response.message)
+                alert(response.data.message)
             })
     };
 
     $scope.changeProduct = function () {
+        let a = document.getElementById('productId').value;
+        $scope.change_product.title = a;
         $http.put(contextPath + '/products', $scope.change_product)
             .then(function successCallback(response) {
                 $scope.change_product = null;
@@ -76,6 +98,5 @@ angular.module('market-front', []).controller('appController', function ($scope,
             --page;
             $scope.loadProducts(page)
         }
-
     }
 });
