@@ -4,7 +4,7 @@ angular.module('market-front').controller('cartController', function ($scope, $h
 
 
     $scope.loadProductFromCart = function () {
-        $http.get(contextPath + '/cart')
+        $http.get(contextPath + '/registration')
             .then(function (response){
                 $scope.products = response.data;
             })
