@@ -19,13 +19,13 @@
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
             <td>
-                <button ng-click="navToEditProductPage(p.id)" class="btn btn-primary" type=button>Изменить</button>
+                <button ng-click="navToEditProductPage(p.id)" ng-show="isUserLoggedIn()" class="btn btn-primary" type=button>Изменить</button>
             </td>
             <td>
-                <button ng-click="deleteProduct(p.id)" class="btn btn-primary" type=button>Удалить</button>
+                <button ng-click="deleteProduct(p.id)" ng-show="isUserLoggedIn()" class="btn btn-primary" type=button>Удалить</button>
             </td>
             <td>
-                <button ng-click="addToCart(p.id)" class="btn btn-primary" type=button>В корзину</button>
+                <button ng-click="addToCart(p.id)" ng-show="isUserLoggedIn()" class="btn btn-primary" type=button>В корзину</button>
             </td>
         </tr>
         </tbody>

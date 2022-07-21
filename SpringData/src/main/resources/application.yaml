@@ -18,4 +18,6 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
-
+jwt:
+  secret: 1324nj3k545gbko3qnhk54jh6hk675lgjgkh54r6d85khgt45dhfg76fj4lee56785ghfgg0d8fj
+  lifetime: 3600000
